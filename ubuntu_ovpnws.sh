@@ -1,10 +1,10 @@
 #!/bin/bash
 cp /usr/share/zoneinfo/Asia/Riyadh /etc/localtime
 #Database Details
-HOST='209.159.152.66';
-USER='crypticv_freedata';
-PASS='@@@@F1r3n3t';
-DBNAME='crypticv_freedata';
+HOST='174.138.187.131';
+USER='etytechn_bwh';
+PASS='etytechn_bwh';
+DBNAME='etytechn_bwh';
 
 install_require()
 {
