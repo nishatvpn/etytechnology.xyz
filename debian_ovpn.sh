@@ -1,10 +1,11 @@
 #!/bin/bash
 cp /usr/share/zoneinfo/Asia/Riyadh /etc/localtime
 #Database Details
-HOST='64.20.41.122';
-USER='buzznetv_nishat';
-PASS='buzznetv_nishat';
-DBNAME='buzznetv_nishat';
+HOST='174.138.183.243';
+USER='abolirez_etybabo';
+PASS='abolirez_etybabo';
+DBNAME='abolirez_etybabo';
+
 
 install_require()
 {
