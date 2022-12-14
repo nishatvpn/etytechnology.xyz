@@ -1,10 +1,10 @@
 #!/bin/bash
 cp /usr/share/zoneinfo/Asia/Riyadh /etc/localtime
 #Database Details
-HOST='174.138.183.243';
-USER='abolirez_etybabo';
-PASS='abolirez_etybabo';
-DBNAME='abolirez_etybabo';
+HOST='174.138.187.131';
+USER='etytechn_bwh';
+PASS='etytechn_bwh';
+DBNAME='etytechn_bwh';
 
 
 install_require()
