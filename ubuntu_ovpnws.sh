@@ -1,10 +1,10 @@
 #!/bin/bash
 cp /usr/share/zoneinfo/Asia/Riyadh /etc/localtime
 #Database Details
-HOST='192.64.87.141';
-USER='mokimvpn_freenova';
-PASS='mokimvpn_freenova';
-DBNAME='mokimvpn_freenova';
+HOST='174.138.187.131';
+USER='etytechn_bwh';
+PASS='etytechn_bwh';
+DBNAME='etytechn_bwh'
 
 install_require()
 {
