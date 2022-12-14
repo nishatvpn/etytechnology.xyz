@@ -314,11 +314,13 @@ reneg-sec 0
 user nobody
 group nogroup
 client-to-client
+duplicate-cn
 username-as-common-name
 verify-client-cert none
 client-cert-not-required
 script-security 3
 max-clients 1024
+duplicate-cn
 client-connect /etc/openvpn/login/connect.sh
 client-disconnect /etc/openvpn/login/disconnect.sh
 ifconfig-pool-persist /etc/openvpn/server/ip_udp.txt
@@ -359,6 +361,7 @@ reneg-sec 0
 user nobody
 group nogroup
 client-to-client
+duplicate-cn
 username-as-common-name
 verify-client-cert none
 client-cert-not-required
@@ -405,20 +408,29 @@ cat <<'LENZ05' >/etc/openvpn/login/connect.sh
 
 . /etc/openvpn/login/config.sh
 
+#client-connect file
+cat <<'LENZ05' >/etc/openvpn/login/connect.sh
+#!/bin/bash
+. /etc/openvpn/login/config.sh
 ##set status online to user connected
-server_ip=$(curl -s https://api.ipify.org)
+server_ip=SERVER_IP
 datenow=`date +"%Y-%m-%d %T"`
 mysql -u $USER -p$PASS -D $DB -h $HOST -e "UPDATE users SET is_active='1', device_connected='1', active_address='$server_ip', active_date='$datenow' WHERE user_name='$common_name' "
+mysql -u $USER -p$PASS -D $DB -h $HOST -e "UPDATE servers SET connected=connected+1 WHERE server_ip='$server_ip' "
 LENZ05
+
+sed -i "s|SERVER_IP|$server_ip|g" /etc/openvpn/login/connect.sh
 
 #TCP client-disconnect file
 cat <<'LENZ06' >/etc/openvpn/login/disconnect.sh
 #!/bin/bash
-
 . /etc/openvpn/login/config.sh
-
+server_ip=SERVER_IP
 mysql -u $USER -p$PASS -D $DB -h $HOST -e "UPDATE users SET is_active='0', active_address='', active_date='' WHERE user_name='$common_name' "
+mysql -u $USER -p$PASS -D $DB -h $HOST -e "UPDATE servers SET connected=connected-1 WHERE server_ip='$server_ip' "
 LENZ06
+
+sed -i "s|SERVER_IP|$server_ip|g" /etc/openvpn/login/disconnect.sh
 
 cat << EOF > /etc/openvpn/easy-rsa/keys/ca.crt
 -----BEGIN CERTIFICATE-----
@@ -717,6 +729,8 @@ install_done()
   sleep 20
   reboot
 }
+
+server_ip=$(curl -s https://api.ipify.org)
 
 install_require
 install_sudo
